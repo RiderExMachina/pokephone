@@ -1,4 +1,13 @@
 pokedex = {
+    "01": "Bulbasaur",
+    "02": "Ivysaur",
+    "03": "Venusaur",
+    "04": "Charmander",
+    "05": "Charmeleon",
+    "06": "Charizard",
+    "07": "Squirtle",
+    "08": "Wartortle",
+    "09": "Blastoise",
     "1": "Bulbasaur",
     "2": "Ivysaur",
     "3": "Venusaur",
@@ -157,6 +166,10 @@ function getPokemon(number){
     return pokedex[number]
 }
 
+function failureWarning(msg){
+     document.getElementById("results").innerHTML = "<div class='error-message'>"+ msg +"</div>";
+}
+
 function numberSplit(number){
     var results = [];
     //split the number
@@ -183,23 +196,22 @@ function parseNumber(number){
     part3 = number.split("-")[2];
     console.log("Number has been split into: '" + part1 + "', '" + part2 + "', and '" + part3 +"'." )
 
-    if (parseInt(part1) != NaN){
-        pokemon1 = numberSplit(part1)
-    }
-    if (parseInt(part2) != NaN) {
-            pokemon2 = numberSplit(part2)
-    }
-    if (parseInt(part3) != NaN){
-        pokemon3 = numberSplit(part3)
+    if (isNaN(part1) || isNaN(part2) || isNaN(part3)){
+        failureWarning("Unable to process. Please ensure you are entering numbers.")
     }
     else {
-        failureWarning("Does your number include letters?")
+        pokemon1 = numberSplit(part1)
+        pokemon2 = numberSplit(part2)
+        pokemon3 = numberSplit(part3)
     }
     console.log(pokemon1[1].values)
     document.getElementById("results").innerHTML = "Your encrypted phone number would be: <br/><b>" + pokemon1[1].values.join(", ") + " - " + pokemon2[1].values.join(", ") + " - " + pokemon3[1].values.join(", ") +"</b>";
 }
 
 function getResults(){
+    if (document.getElementById("results").innerHTML != ""){
+        document.getElementById("results").innerHTML = "";
+    }
     // kick the process off
     testNumber = "222-555-1234"
     //test number for verification.
@@ -219,6 +231,6 @@ function getResults(){
     }
     else{
         console.log("Incorrect fomatting detected")
-        document.getElementById("results").innerHTML = "<div class='error-mesage'>Incorrect phone number input! Please use XXX-XXX-XXXX format and do not use other formatting.</div>";
+       failureWarning("Incorrect phone number input! Please use XXX-XXX-XXXX format and do not use other formatting.")
     }
 }
